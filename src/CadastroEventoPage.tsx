@@ -1,6 +1,17 @@
 import { useState } from "react";
 import type { CreateEventoDto } from "./dto/CreateEventoDTO";
-import { Field, Fieldset, Input, Label } from "@headlessui/react";
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxOption,
+  ComboboxOptions,
+  Field,
+  Fieldset,
+  Input,
+  Label,
+} from "@headlessui/react";
+import type { CreateMaterialDTO } from "./dto/CreateMaterialDTO";
+import Button from "./components/Button";
 
 function CadastroEventoPage() {
   const [evento, setEvento] = useState<CreateEventoDto>({
@@ -13,6 +24,9 @@ function CadastroEventoPage() {
     sinal: 0,
   });
 
+  {
+    /* fazer validação de texto depois */
+  }
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setEvento((prevState) => ({
@@ -33,11 +47,26 @@ function CadastroEventoPage() {
     }
   };
 
+  const MateriaisExemplo: CreateMaterialDTO[] = [
+    { id: 1, nome: "Caixa de Som X", quantidade: 10 },
+    { id: 2, nome: "Pé com borracha Y", quantidade: 4 },
+    { id: 3, nome: "Material Z sem borracha", quantidade: 5 },
+  ];
+
+  const [material, setMaterial] = useState<CreateMaterialDTO[]>([
+    { id: 0, nome: "", quantidade: 1 },
+  ]);
+
+  const onClickAddMaterial = (materialNovo: CreateMaterialDTO[]) => {
+  };
+
   return (
     <>
-      <div className="p-4 bg-slate-400 min-h-screen space-y-4">
-        <h1 className="text-center text-3xl font-bold"> Cadastro de Evento </h1>
+      <div className="p-4 bg-slate-400 min-h-screen space-y-17">
+        {/* Evento */}
         <Fieldset className={"space-y-2"}>
+          <h1 className="text-center text-3xl font-bold">Cadastro de Evento</h1>
+
           <Field className={""}>
             <Label>Nome do Evento: </Label>
             <Input
@@ -108,6 +137,45 @@ function CadastroEventoPage() {
             />
           </Field>
         </Fieldset>
+
+        {/* Materiais */}
+        <Fieldset className={"space-y-2"}>
+          <h1 className="text-center text-3xl font-bold">Materiais</h1>
+
+
+            <Field className={"flex gap-10"}>
+              <Combobox>
+                <ComboboxInput/>                
+                <ComboboxOptions></ComboboxOption>
+                </ComboboxOptions>
+              </Combobox>
+
+              <Input
+                name="quantidade"
+                key={m.id}
+                type="number"
+                placeholder="Quant"
+                className={"bg-white border rounded-md"}
+                value={m.quantidade}
+              />
+            </Field>
+
+            <Button
+              onClick={() => onClickAddMaterial(material)}
+              className="bg-white text-center font-bold text-2xl w-full"
+            >
+              +
+            </Button>
+            
+        </Fieldset>
+
+        <div className="bg-white border-1 p-3 rounded-md">
+          <div className="flex justify-end">
+            <Button className="bg-slate-100 rounded-md border-2 p-2 text-2xl">
+              Adicionar Evento
+            </Button>
+          </div>
+        </div>
       </div>
     </>
   );
