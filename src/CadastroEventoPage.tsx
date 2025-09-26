@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { CreateEventoDto } from "./dto/CreateEventoDTO";
 import {
   Combobox,
+  ComboboxButton,
   ComboboxInput,
   ComboboxOption,
   ComboboxOptions,
@@ -12,6 +13,7 @@ import {
 } from "@headlessui/react";
 import type { CreateMaterialDTO } from "./dto/CreateMaterialDTO";
 import Button from "./components/Button";
+import { CheckIcon, ChevronDownIcon } from "lucide-react";
 
 function CadastroEventoPage() {
   const [evento, setEvento] = useState<CreateEventoDto>({
@@ -24,10 +26,10 @@ function CadastroEventoPage() {
     sinal: 0,
   });
 
-  {
-    /* fazer validação de texto depois */
-  }
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    {
+      /* fazer validação de texto depois */
+    }
     const { name, value } = event.target;
     setEvento((prevState) => ({
       ...prevState,
@@ -53,12 +55,23 @@ function CadastroEventoPage() {
     { id: 3, nome: "Material Z sem borracha", quantidade: 5 },
   ];
 
-  const [material, setMaterial] = useState<CreateMaterialDTO[]>([
-    { id: 0, nome: "", quantidade: 1 },
-  ]);
+  const [query, setQuery] = useState("");
+  const [materialSelecioando, setMaterialSelecioando] =
+    useState<CreateMaterialDTO>({ id: 0, nome: "", quantidade: 1 });
+  const [material, setMaterial] = useState<CreateMaterialDTO>({
+    id: 0,
+    nome: " abc ",
+    quantidade: 1,
+  });
 
-  const onClickAddMaterial = (materialNovo: CreateMaterialDTO[]) => {
-  };
+  const filteredMaterial =
+    query === ""
+      ? MateriaisExemplo
+      : MateriaisExemplo.filter((material) => {
+          return material.nome.toLowerCase().includes(query.toLowerCase());
+        });
+
+  //const onClickAddMaterial = (materialNovo: CreateMaterialDTO[]) => {};
 
   return (
     <>
@@ -142,31 +155,54 @@ function CadastroEventoPage() {
         <Fieldset className={"space-y-2"}>
           <h1 className="text-center text-3xl font-bold">Materiais</h1>
 
+          <Field className={"flex gap-10"}>
+            <Combobox
+              value={materialSelecioando}
+              onChange={(value) => {
+                if (value) setMaterialSelecioando(value);
+              }}
+              onClose={() => setQuery("")}
+            >
+              <div className="relative">
+                <ComboboxInput
+                  displayValue={(m: CreateMaterialDTO) => m?.nome}
+                  onChange={(event) => setQuery(event.target.value)}
+                />
+                <ComboboxButton className="group absolute inset-y-0 right-0 px-2.5">
+                  <ChevronDownIcon className="size-4 " />
+                </ComboboxButton>
+              </div>
 
-            <Field className={"flex gap-10"}>
-              <Combobox>
-                <ComboboxInput/>                
-                <ComboboxOptions></ComboboxOption>
-                </ComboboxOptions>
-              </Combobox>
+              <ComboboxOptions
+                anchor="bottom"
+                className="border empty:invisible"
+              >
+                {MateriaisExemplo.map((m) => (
+                  <ComboboxOption
+                    className="group flex gap-2 bg-white data-focus:bg-blue-100"
+                    key={m.id}
+                    value={m}
+                  >
+                    <CheckIcon className="invisible size-5 group-data-selected:visible" />
+                    {m.nome}
+                  </ComboboxOption>
+                ))}
+              </ComboboxOptions>
+            </Combobox>
 
-              <Input
+            {/* <Input
                 name="quantidade"
                 key={m.id}
                 type="number"
                 placeholder="Quant"
                 className={"bg-white border rounded-md"}
                 value={m.quantidade}
-              />
-            </Field>
+              /> */}
+          </Field>
 
-            <Button
-              onClick={() => onClickAddMaterial(material)}
-              className="bg-white text-center font-bold text-2xl w-full"
-            >
-              +
-            </Button>
-            
+          <Button className="bg-white text-center font-bold text-2xl ">
+            +
+          </Button>
         </Fieldset>
 
         <div className="bg-white border-1 p-3 rounded-md">
