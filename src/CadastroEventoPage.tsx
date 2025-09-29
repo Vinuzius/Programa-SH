@@ -57,12 +57,12 @@ function CadastroEventoPage() {
 
   const [query, setQuery] = useState("");
   const [materialSelecioando, setMaterialSelecioando] =
-    useState<CreateMaterialDTO>({ id: 0, nome: "", quantidade: 1 });
-  const [material, setMaterial] = useState<CreateMaterialDTO>({
-    id: 0,
-    nome: " abc ",
-    quantidade: 1,
-  });
+    useState<CreateMaterialDTO>({
+      id: 0,
+      nome: "",
+      quantidade: 0,
+    });
+  const [material, setMaterial] = useState<CreateMaterialDTO[]>([]);
 
   const filteredMaterial =
     query === ""
@@ -71,7 +71,9 @@ function CadastroEventoPage() {
           return material.nome.toLowerCase().includes(query.toLowerCase());
         });
 
-  //const onClickAddMaterial = (materialNovo: CreateMaterialDTO[]) => {};
+  const onClickAddMaterial = (materialNovo: CreateMaterialDTO) => {
+    setMaterial((prevState) => [...prevState, materialNovo]);
+  };
 
   return (
     <>
@@ -163,7 +165,7 @@ function CadastroEventoPage() {
               }}
               onClose={() => setQuery("")}
             >
-              <div className="relative">
+              <div className="relative bg-white rounded-md border">
                 <ComboboxInput
                   displayValue={(m: CreateMaterialDTO) => m?.nome}
                   onChange={(event) => setQuery(event.target.value)}
@@ -175,13 +177,14 @@ function CadastroEventoPage() {
 
               <ComboboxOptions
                 anchor="bottom"
-                className="border empty:invisible"
+                transition
+                className="border empty:invisible w-(--input-width)"
               >
-                {MateriaisExemplo.map((m) => (
+                {filteredMaterial.map((m) => (
                   <ComboboxOption
                     className="group flex gap-2 bg-white data-focus:bg-blue-100"
                     key={m.id}
-                    value={m}
+                    value={{ id: m.id, nome: m.nome }}
                   >
                     <CheckIcon className="invisible size-5 group-data-selected:visible" />
                     {m.nome}
@@ -190,28 +193,37 @@ function CadastroEventoPage() {
               </ComboboxOptions>
             </Combobox>
 
-            {/* <Input
-                name="quantidade"
-                key={m.id}
-                type="number"
-                placeholder="Quant"
-                className={"bg-white border rounded-md"}
-                value={m.quantidade}
-              /> */}
+            <Input
+              name="quantidade"
+              key={materialSelecioando.id}
+              type="number"
+              placeholder="Quant"
+              className={"bg-white border rounded-md"}
+            />
           </Field>
 
-          <Button className="bg-white text-center font-bold text-2xl ">
+          {material.map((m) => {
+            return (
+              <p>
+                {m.nome} - {m.quantidade}{" "}
+              </p>
+            );
+          })}
+          <Button
+            onClick={() => onClickAddMaterial(materialSelecioando)}
+            className="bg-white text-center font-bold text-2xl "
+          >
             +
           </Button>
         </Fieldset>
 
-        <div className="bg-white border-1 p-3 rounded-md">
+        {/* <div className="bg-white border-1 p-3 rounded-md">
           <div className="flex justify-end">
             <Button className="bg-slate-100 rounded-md border-2 p-2 text-2xl">
               Adicionar Evento
             </Button>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );
