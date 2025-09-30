@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { CreateEventoDto } from "./dto/CreateEventoDTO";
 import {
   Combobox,
@@ -14,17 +14,23 @@ import {
 import type { CreateMaterialDTO } from "./dto/CreateMaterialDTO";
 import Button from "./components/Button";
 import { CheckIcon, ChevronDownIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function CadastroEventoPage() {
-  const [evento, setEvento] = useState<CreateEventoDto>({
-    nome: "",
-    local: "",
-    dataInicio: "",
-    valorBruto: 0,
-    materiais: [],
-    dataFim: "",
-    sinal: 0,
+  const [evento, setEvento] = useState<CreateEventoDto>(() => {
+    try {
+      const storedEvento = localStorage.getItem("evento");
+      return storedEvento ? JSON.parse(storedEvento) : [];
+    } catch (error) {
+      console.error("Failed to parse evento from localStorage", error);
+      return [];
+    }
   });
+
+  useEffect(() => {
+    localStorage.setItem("evento", JSON.stringify(evento));
+    //nome do que eu quero armazenar, e o que vai ser armazenado
+  }, [evento]);
 
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     {
@@ -62,6 +68,7 @@ function CadastroEventoPage() {
       nome: "",
       quantidade: 0,
     });
+  const [quantidadeSelecionada, setQuantidadeSelecionada] = useState(1);
   const [material, setMaterial] = useState<CreateMaterialDTO[]>([]);
 
   const filteredMaterial =
@@ -71,15 +78,33 @@ function CadastroEventoPage() {
           return material.nome.toLowerCase().includes(query.toLowerCase());
         });
 
-  const onClickAddMaterial = (materialNovo: CreateMaterialDTO) => {
+  const navigate = useNavigate();
+  // Validação temporário até desenvolver o backend
+  const onClickAddMaterial = (
+    materialNovo: CreateMaterialDTO,
+    quant: number
+  ) => {
+    if (material.find((m) => m.id === materialNovo.id)) {
+      alert("Material adicionado anteriormente");
+      return;
+    }
+
+    materialNovo.quantidade = quant;
     setMaterial((prevState) => [...prevState, materialNovo]);
+  };
+
+  // Validação temporário até desenvolver o backend
+  const handleClickAddEvento = () => {
+    evento.materiais = material;
+    console.log("Evento cadastrado:", evento);
+    navigate("/");
   };
 
   return (
     <>
       <div className="p-4 bg-slate-400 min-h-screen space-y-17">
         {/* Evento */}
-        <Fieldset className={"space-y-2"}>
+        <Fieldset className={"space-y-2"} key={"evento"}>
           <h1 className="text-center text-3xl font-bold">Cadastro de Evento</h1>
 
           <Field className={""}>
@@ -138,6 +163,7 @@ function CadastroEventoPage() {
               placeholder="1000.00"
               value={evento.valorBruto}
               onChange={handleNumberChange}
+              step={100}
               className={"border rounded-md bg-slate-100"}
             />
 
@@ -148,6 +174,7 @@ function CadastroEventoPage() {
               placeholder="00.00"
               value={evento.sinal}
               onChange={handleNumberChange}
+              step={100}
               className={"border rounded-md bg-slate-100"}
             />
           </Field>
@@ -197,8 +224,14 @@ function CadastroEventoPage() {
               name="quantidade"
               key={materialSelecioando.id}
               type="number"
-              placeholder="Quant"
-              className={"bg-white border rounded-md"}
+              placeholder=" Quant"
+              className={"bg-white border rounded-md w-20"}
+              min={1}
+              max={materialSelecioando.quantidade}
+              value={quantidadeSelecionada}
+              onChange={(e) =>
+                setQuantidadeSelecionada(parseInt(e.target.value))
+              }
             />
           </Field>
 
@@ -210,20 +243,25 @@ function CadastroEventoPage() {
             );
           })}
           <Button
-            onClick={() => onClickAddMaterial(materialSelecioando)}
+            onClick={() =>
+              onClickAddMaterial(materialSelecioando, quantidadeSelecionada)
+            }
             className="bg-white text-center font-bold text-2xl "
           >
             +
           </Button>
         </Fieldset>
 
-        {/* <div className="bg-white border-1 p-3 rounded-md">
+        <div className="bg-white border-1 p-3 rounded-md">
           <div className="flex justify-end">
-            <Button className="bg-slate-100 rounded-md border-2 p-2 text-2xl">
-              Adicionar Evento
+            <Button
+              className="bg-slate-100 rounded-md border-2 p-2 text-2xl"
+              onClick={() => handleClickAddEvento()}
+            >
+              Cadastrar Evento
             </Button>
           </div>
-        </div> */}
+        </div>
       </div>
     </>
   );
