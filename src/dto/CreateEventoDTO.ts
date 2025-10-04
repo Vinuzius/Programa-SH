@@ -1,3 +1,4 @@
+import type { EventoStatusEnum } from "../enum/EventoStatusEnum";
 import type { CreateMaterialDTO } from "./CreateMaterialDTO";
 
 export interface CreateEventoDto {
@@ -7,5 +8,6 @@ export interface CreateEventoDto {
   dataFim?: string;
   valorBruto: number;
   sinal?: number;
+  status?: EventoStatusEnum;
   materiais: CreateMaterialDTO[];
 }
