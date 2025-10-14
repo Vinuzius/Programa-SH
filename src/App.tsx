@@ -4,13 +4,15 @@ import NavBarTab from "./components/NavBar/NavBarTab";
 function App() {
   return (
     <>
-      <div className="bg-slate-300 min-h-screen flex flex-col border p-1">
-        <div className="flex-grow flex flex-col space-y-2">
+      <div className="bg-slate-300 min-h-screen flex flex-col border p-1 ">
+        <div className="space-y-2">
           {/* Top Navigation Section */}
           <NavBarTab />
         </div>
 
-        <Outlet />
+        <div className="grow flex flex-col">
+          <Outlet />
+        </div>
 
         {/* Footer Section */}
         <div className="bg-white border-1 p-3 rounded-md">

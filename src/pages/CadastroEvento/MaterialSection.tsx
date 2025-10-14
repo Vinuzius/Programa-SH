@@ -109,7 +109,7 @@ const MaterialSection: React.FC<MaterialSectionProps> = ({
         onClick={() =>
           onClickAddMaterial(materialSelecioando, quantidadeSelecionada)
         }
-        className="bg-white text-center font-bold text-2xl "
+        className="bg-white text-center font-bold text-2xl border p-1 "
       >
         +
       </Button>

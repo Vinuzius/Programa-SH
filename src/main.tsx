@@ -2,7 +2,11 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import CadastroEventoPage from "./pages/CadastroEvento/CadastroEventoPage.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import EventosPage from "./pages/EventosPage.tsx";
@@ -13,6 +17,10 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <NotFoundPage />,
     children: [
+      {
+        index: true,
+        element: <Navigate to="/evento/em-andamento" replace />,
+      },
       {
         path: "/evento/:status",
         element: <EventosPage />,

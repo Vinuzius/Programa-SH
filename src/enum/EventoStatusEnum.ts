@@ -1,7 +1,7 @@
-export type EventoStatusEnum = "em-andamento" | "Arquivado" | "Receber";
+export type EventoStatusEnum = "em-andamento" | "arquivado" | "receber";
 
 export const EventoStatusEnum = {
   Andamento: "em-andamento" as EventoStatusEnum,
-  Arquivado: "Arquivado" as EventoStatusEnum,
-  Receber: "Receber" as EventoStatusEnum,
+  Arquivado: "arquivado" as EventoStatusEnum,
+  Receber: "receber" as EventoStatusEnum,
 };
