@@ -39,6 +39,10 @@ const router = createBrowserRouter([
     path: "/cadastro-evento",
     element: <CadastroEventoPage />,
   },
+  {
+    path: "/editar/:id",
+    element: <CadastroEventoPage />,
+  },
 ]);
 
 createRoot(document.getElementById("root")!).render(

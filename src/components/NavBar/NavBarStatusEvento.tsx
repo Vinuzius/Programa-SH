@@ -20,7 +20,7 @@ function NavBarStatusEvento() {
   return (
     <>
       <div>
-        <ul className="flex gap-4 border-1 rounded-md p-3 text-2xl">
+        <ul className="flex gap-4 border-1 rounded-md w-full p-3 text-2xl">
           {paths.map((p) => (
             <li key={p.name}>
               <NavLink

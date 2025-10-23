@@ -5,16 +5,18 @@ interface EventoFormsProps {
   evento: CreateEventoDto;
   handleTextChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleNumberChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  title?: string;
 }
 
 const EventoForms: React.FC<EventoFormsProps> = ({
   evento,
   handleTextChange,
   handleNumberChange,
+  title,
 }) => {
   return (
     <Fieldset className={"space-y-2"} key={"evento"}>
-      <h1 className="text-center text-3xl font-bold">Cadastro de Evento</h1>
+      <h1 className="text-center text-3xl font-bold">{title}</h1>
 
       <Field className={""}>
         <Label>Nome do Evento: </Label>

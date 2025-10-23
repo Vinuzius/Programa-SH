@@ -4,7 +4,7 @@ import NavBarTab from "./components/NavBar/NavBarTab";
 function App() {
   return (
     <>
-      <div className="bg-slate-300 min-h-screen flex flex-col border p-1 ">
+      <div className="bg-slate-400 min-h-screen flex flex-col border p-1 ">
         <div className="space-y-2">
           {/* Top Navigation Section */}
           <NavBarTab />
