@@ -19,9 +19,9 @@ interface MaterialSectionProps {
 }
 
 const MateriaisExemplo: CreateMaterialDTO[] = [
-  { id: 1, nome: "Caixa de Som X", quantidade: 10 },
-  { id: 2, nome: "Pé com borracha Y", quantidade: 4 },
-  { id: 3, nome: "Material Z sem borracha", quantidade: 5 },
+  { id: 1, nome: "Caixa de Som X", stock_quantity: 10 },
+  { id: 2, nome: "Pé com borracha Y", stock_quantity: 4 },
+  { id: 3, nome: "Material Z sem borracha", stock_quantity: 5 },
 ];
 
 const MaterialSection: React.FC<MaterialSectionProps> = ({
@@ -34,7 +34,7 @@ const MaterialSection: React.FC<MaterialSectionProps> = ({
     useState<CreateMaterialDTO>({
       id: 0,
       nome: "",
-      quantidade: 0,
+      stock_quantity: 0,
     });
   const [quantidadeSelecionada, setQuantidadeSelecionada] = useState(1);
 
@@ -92,7 +92,7 @@ const MaterialSection: React.FC<MaterialSectionProps> = ({
           placeholder=" Quant"
           className={"bg-white border rounded-md w-20"}
           min={1}
-          max={materialSelecioando.quantidade}
+          max={materialSelecioando.stock_quantity}
           value={quantidadeSelecionada}
           onChange={(e) => setQuantidadeSelecionada(parseInt(e.target.value))}
         />
@@ -101,7 +101,7 @@ const MaterialSection: React.FC<MaterialSectionProps> = ({
       {material.map((m) => {
         return (
           <p key={m.id}>
-            {m.nome} - {m.quantidade}{" "}
+            {m.nome} - {m.stock_quantity}{" "}
           </p>
         );
       })}

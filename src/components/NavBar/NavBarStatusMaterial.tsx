@@ -3,22 +3,23 @@ import { NavLink } from "react-router-dom";
 interface PathObject {
   name: string;
   path: string;
+  icon?: React.ReactNode;
 }
 
 const paths: PathObject[] = [
-  { name: "Eventos", path: "/" },
-  { name: "Materiais", path: "/material/stock" }, // coloquei em-galpao como padrão mas é uma pratica ruim
-  { name: "Calendario", path: "/calendario" },
+  { name: "Em Galpão", path: "/material/stock" },
+  { name: "Delegado", path: "/material/using" },
+  { name: "Conserto", path: "/material/fix" },
 ];
 
 const navStyle =
   "bg-white rounded-md p-4 hover:bg-slate-200 flex items-center gap-2";
 
-function NavBarTab() {
+function NavBarStatusMaterial() {
   return (
     <>
       <div>
-        <ul className="flex gap-4 border-1 rounded-md p-3 text-2xl">
+        <ul className="flex gap-4 border-1 rounded-md w-full p-3 text-2xl">
           {paths.map((p) => (
             <li key={p.name}>
               <NavLink
@@ -27,7 +28,7 @@ function NavBarTab() {
                   isActive ? `${navStyle} border-4 ` : `${navStyle} border-1 `
                 }
               >
-                {p.name}
+                {p.name} {p.icon}
               </NavLink>
             </li>
           ))}
@@ -37,4 +38,4 @@ function NavBarTab() {
   );
 }
 
-export default NavBarTab;
+export default NavBarStatusMaterial;

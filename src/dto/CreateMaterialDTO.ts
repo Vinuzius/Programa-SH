@@ -1,5 +1,7 @@
 export interface CreateMaterialDTO {
   id: number;
   nome: string;
-  quantidade?: number;
+  stock_quantity: number;
+  using_quantity: number;
+  repair_quantity: number;
 }

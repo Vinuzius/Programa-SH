@@ -1,8 +1,8 @@
 import { Archive, Wallet, Search, Clock } from "lucide-react";
-import type { CreateEventoDto } from "../dto/CreateEventoDTO";
-import NavBarStatusEvento from "../components/NavBar/NavBarStatusEvento";
+import type { CreateEventoDto } from "../../dto/CreateEventoDTO";
+import NavBarStatusEvento from "../../components/NavBar/NavBarStatusEvento";
 import { useParams } from "react-router-dom";
-import type { EventoStatusEnum } from "../enum/EventoStatusEnum";
+import type { EventoStatusEnum } from "../../enum/EventoStatusEnum";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -35,14 +35,13 @@ const EventosPage = () => {
           e.nome.toLowerCase().includes(searchEvento.toLowerCase())
         );
 
-  // mudar a comparação para id depois
   const handleStatusChange = (
     novoEvento: CreateEventoDto,
     novoStatus: EventoStatusEnum
   ) => {
     setEventosTotais(
       getEventosFromStorage().map((ev) => {
-        if (ev.nome === novoEvento.nome) {
+        if (ev.id === novoEvento.id) {
           return { ...ev, status: novoStatus };
         }
         return ev;
@@ -90,6 +89,7 @@ const EventosPage = () => {
 
                 {/* Botões de Status */}
                 <div className="flex gap-2">
+                  <p>{ev.dataInicio}</p>
                   {ev.status !== "receber" && (
                     <button
                       onClick={() => {

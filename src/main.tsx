@@ -7,9 +7,11 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import CadastroEventoPage from "./pages/CadastroEvento/CadastroEventoPage.tsx";
+import CadastroEventoPage from "./pages/Event/CadastroEventoPage.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
-import EventosPage from "./pages/EventosPage.tsx";
+import EventosPage from "./pages/Event/EventosPage.tsx";
+import MaterialPage from "./pages/Material/MaterialPage.tsx";
+import CadastroMaterialPage from "./pages/Material/CadastroMaterialPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -26,8 +28,8 @@ const router = createBrowserRouter([
         element: <EventosPage />,
       },
       {
-        path: "/materiais",
-        element: <h1>Materiais</h1>,
+        path: "/material/:status",
+        element: <MaterialPage />,
       },
       {
         path: "/calendario",
@@ -38,6 +40,10 @@ const router = createBrowserRouter([
   {
     path: "/cadastro-evento",
     element: <CadastroEventoPage />,
+  },
+  {
+    path: "/cadastro-material",
+    element: <CadastroMaterialPage />,
   },
   {
     path: "/editar/:id",

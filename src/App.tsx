@@ -1,7 +1,39 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import NavBarTab from "./components/NavBar/NavBarTab";
 
 function App() {
+  const { pathname } = useLocation();
+
+  const RegisterButton = (path: string) => {
+    if (path.startsWith("/calendario")) return null;
+
+    return (
+      <div className="bg-white border-1 p-3 rounded-md">
+        <div className="flex justify-end">
+          {path.startsWith("/evento/") ? (
+            <>
+              <Link
+                className="bg-slate-100 rounded-md border-2 p-2 text-2xl"
+                to="/cadastro-evento"
+              >
+                Adicionar Evento
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                className="bg-slate-100 rounded-md border-2 p-2 text-2xl"
+                to="/cadastro-material"
+              >
+                Adicionar Material
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
       <div className="bg-slate-400 min-h-screen flex flex-col border p-1 ">
@@ -15,16 +47,7 @@ function App() {
         </div>
 
         {/* Footer Section */}
-        <div className="bg-white border-1 p-3 rounded-md">
-          <div className="flex justify-end">
-            <Link
-              className="bg-slate-100 rounded-md border-2 p-2 text-2xl"
-              to="/cadastro-evento"
-            >
-              Adicionar Evento
-            </Link>
-          </div>
-        </div>
+        {RegisterButton(pathname)}
       </div>
     </>
   );
