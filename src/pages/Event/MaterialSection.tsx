@@ -8,14 +8,14 @@ import {
   ComboboxOption,
   Input,
   Button,
-  Label, // <-- IMPORTED Label
+  Label,
 } from "@headlessui/react";
 import { ChevronDownIcon, CheckIcon } from "lucide-react";
 import { useState, useMemo } from "react"; // <-- IMPORTED useMemo
 import type { CreateMaterialDTO } from "../../dto/CreateMaterialDTO";
 
 interface MaterialSectionProps {
-  material: CreateMaterialDTO[];
+  material: (CreateMaterialDTO & { quantidade: number })[];
   onClickAddMaterial: (materialNovo: CreateMaterialDTO, quant: number) => void;
 }
 
@@ -33,9 +33,6 @@ const MaterialSection: React.FC<MaterialSectionProps> = ({
   material,
   onClickAddMaterial,
 }) => {
-  // --- PERFORMANCE FIX ---
-  // We use useMemo to cache the localStorage call.
-  // This list is now fetched only ONCE, not on every render.
   const allMaterials = useMemo(() => getMaterialFromStorage(), []);
 
   const [query, setQuery] = useState("");
@@ -56,8 +53,13 @@ const MaterialSection: React.FC<MaterialSectionProps> = ({
           return material.nome.toLowerCase().includes(query.toLowerCase());
         });
 
-  // --- STYLING CONSTANTS ---
-  // Re-using the light-gray input style
+  const handleClickAddMaterial = () => {
+    if (materialSelecioando.stock_quantity >= quantidadeSelecionada)
+      return onClickAddMaterial(materialSelecioando, quantidadeSelecionada);
+
+    return alert("Quantidade selecionada maior que existe no estoque.");
+  };
+
   const inputBaseClasses = [
     "w-full",
     "rounded-md",
@@ -74,7 +76,6 @@ const MaterialSection: React.FC<MaterialSectionProps> = ({
   ].join(" ");
 
   return (
-    // The dark green card
     <Fieldset
       className={
         "max-w-xl space-y-6 rounded-lg bg-green-950 p-8 shadow-lg w-full"
@@ -83,7 +84,6 @@ const MaterialSection: React.FC<MaterialSectionProps> = ({
     >
       <h1 className="text-center text-3xl font-bold text-white">Materiais</h1>
 
-      {/* Input section with proper grid layout */}
       <div className="grid grid-cols-3 gap-4">
         {/* Combobox Field (Material) */}
         <Field className="col-span-2 flex flex-col">
@@ -108,7 +108,7 @@ const MaterialSection: React.FC<MaterialSectionProps> = ({
               <ComboboxInput
                 displayValue={(m: CreateMaterialDTO) => m?.nome}
                 onChange={(event) => setQuery(event.target.value)}
-                className={inputBaseClasses} // Apply standard style
+                className={inputBaseClasses}
                 placeholder="Procurar material..."
               />
               <ComboboxButton className="group absolute inset-y-0 right-0 flex items-center px-2.5">
@@ -131,8 +131,6 @@ const MaterialSection: React.FC<MaterialSectionProps> = ({
                   <ComboboxOption
                     className="group flex cursor-default select-none items-center gap-2 rounded-md px-3 py-2 data-[focus]:bg-green-100 data-[focus]:text-green-900"
                     key={m.id}
-                    // --- BUG FIX ---
-                    // Pass the whole object, not just id/nome
                     value={m}
                   >
                     <CheckIcon className="invisible size-5 group-data-selected:visible" />
@@ -149,10 +147,10 @@ const MaterialSection: React.FC<MaterialSectionProps> = ({
           <Label className="mb-1 text-sm font-medium text-white">Quant:</Label>
           <Input
             name="quantidade"
-            key={materialSelecioando.id} // This key resets the input, which is good
+            key={materialSelecioando.id}
             type="number"
             placeholder="Quant"
-            className={inputBaseClasses} // Apply standard style
+            className={inputBaseClasses}
             min={1}
             max={materialSelecioando.stock_quantity}
             value={quantidadeSelecionada}
@@ -161,7 +159,8 @@ const MaterialSection: React.FC<MaterialSectionProps> = ({
         </Field>
       </div>
 
-      {/* Styled List of Added Materials */}
+      {/* Styled List of Added Materials
+          Future feature: exclude added material */}
       <div className="space-y-2">
         <Label className="text-sm font-medium text-white">
           Materiais Adicionados:
@@ -178,12 +177,7 @@ const MaterialSection: React.FC<MaterialSectionProps> = ({
                 className="flex justify-between rounded p-2 text-green-100"
               >
                 <span>{m.nome}</span>
-                {/* We don't have the quantity here, just the stock.
-                    This component only *adds* materials, it doesn't store the *added* quantity.
-                    The parent component needs to pass this.
-                    For now, I will just show the name.
-                */}
-                <span>{m.nome}</span>
+                <span>{m.quantidade}</span>
                 {/* <span>x {m.stock_quantity}</span> // This is probably wrong */}
               </div>
             ))
@@ -193,9 +187,7 @@ const MaterialSection: React.FC<MaterialSectionProps> = ({
 
       {/* Styled "Add" Button */}
       <Button
-        onClick={() =>
-          onClickAddMaterial(materialSelecioando, quantidadeSelecionada)
-        }
+        onClick={() => handleClickAddMaterial()}
         className="w-full rounded-md bg-gray-200 px-4 py-2.5 text-sm font-semibold text-gray-800 shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-green-900"
       >
         Adicionar Material

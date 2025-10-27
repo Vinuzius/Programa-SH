@@ -23,14 +23,35 @@ const router = createBrowserRouter([
         index: true,
         element: <Navigate to="/evento/em-andamento" replace />,
       },
+
       {
-        path: "/evento/:status",
-        element: <EventosPage />,
+        path: "/evento",
+        children: [
+          {
+            index: true,
+            element: <Navigate to="/evento/em-andamento" replace />,
+          },
+          {
+            path: ":status",
+            element: <EventosPage />,
+          },
+        ],
       },
+
       {
-        path: "/material/:status",
-        element: <MaterialPage />,
+        path: "/material",
+        children: [
+          {
+            index: true,
+            element: <Navigate to="/material/stock" replace />,
+          },
+          {
+            path: ":status",
+            element: <MaterialPage />,
+          },
+        ],
       },
+
       {
         path: "/calendario",
         element: <h1>Calendario</h1>,

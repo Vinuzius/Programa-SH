@@ -1,9 +1,9 @@
 import { ChevronDown, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import NavBarStatusMaterial from "../../components/NavBar/NavBarStatusMaterial";
 import type { CreateMaterialDTO } from "../../dto/CreateMaterialDTO";
 import Button from "../../components/Button";
+import NavBarStatus, { type PathObject } from "../../components/NavBarStatus";
 
 const getMaterialFromStorage = (): CreateMaterialDTO[] => {
   try {
@@ -15,6 +15,11 @@ const getMaterialFromStorage = (): CreateMaterialDTO[] => {
   }
 };
 
+const materialPaths: PathObject[] = [
+  { name: "Em Galpão", path: "/material/stock" },
+  { name: "Delegado", path: "/material/using" },
+  { name: "Conserto", path: "/material/fix" },
+];
 const MaterialPage = () => {
   const { status } = useParams<{ status?: string }>();
 
@@ -87,7 +92,7 @@ const MaterialPage = () => {
   return (
     <div className="flex flex-col grow">
       <div className="gap-2">
-        <NavBarStatusMaterial />
+        <NavBarStatus paths={materialPaths} />
       </div>
 
       <div className="flex flex-col flex-grow border rounded-lg">

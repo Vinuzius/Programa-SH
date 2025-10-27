@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import type { CreateEventoDto } from "../../dto/CreateEventoDTO";
 import type { CreateMaterialDTO } from "../../dto/CreateMaterialDTO";
@@ -16,6 +17,16 @@ const getEventosFromStorage = (): CreateEventoDto[] => {
   }
 };
 
+const getMaterialFromStorage = (): CreateMaterialDTO[] => {
+  try {
+    const storedMaterial = localStorage.getItem("material");
+    return storedMaterial ? JSON.parse(storedMaterial) : [];
+  } catch (error) {
+    console.error("Failed to parse material from localStorage", error);
+    return [];
+  }
+};
+
 function CadastroEventoPage() {
   // Variaveis
   const navigate = useNavigate();
@@ -29,12 +40,11 @@ function CadastroEventoPage() {
     dataFim: "",
     valorBruto: 0,
     sinal: 0,
-    materiais: [],
+    materiais: [] as (CreateMaterialDTO & { quantidade: number })[],
   });
 
   const pageTitle = evento.id > 0 ? "Editar Evento" : "Cadastro de Evento";
 
-  // ... (All your functions like handleTextChange, handleClickAddEvento, etc. are unchanged)
   // Funções
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // ... (your logic is unchanged)
@@ -57,6 +67,7 @@ function CadastroEventoPage() {
     }
   };
 
+  // Corrigir edição de material ao salvar evento
   const handleClickAddEvento = () => {
     // ... (your logic is unchanged)
     if (
@@ -80,6 +91,24 @@ function CadastroEventoPage() {
       }
       const novaListaDeEventos = [...savedEventos, eventoFinal];
       localStorage.setItem("evento", JSON.stringify(novaListaDeEventos));
+
+      const allMaterials = getMaterialFromStorage().map((materials) => {
+        const materialFromEvent = eventoFinal.materiais.find(
+          (m) => m.id === materials.id
+        ) as (CreateMaterialDTO & { quantidade: number }) | undefined;
+        if (materialFromEvent) {
+          return {
+            ...materials,
+            stock_quantity:
+              materials.stock_quantity - materialFromEvent.quantidade,
+            using_quantity:
+              materials.using_quantity + materialFromEvent.quantidade,
+          };
+        }
+        return materials;
+      });
+
+      localStorage.setItem("material", JSON.stringify(allMaterials));
     } else {
       const modifyEvento = savedEvento.map((ev) => {
         if (ev.id === evento.id) {
@@ -137,42 +166,34 @@ function CadastroEventoPage() {
           />
 
           <MaterialSection
-            material={evento.materiais}
+            material={evento.materiais.map((m) => ({
+              ...m,
+              quantidade: (m as any).quantidade ?? 0,
+            }))}
             onClickAddMaterial={onClickAddMaterial}
           />
         </div>
-
-        {/* This <div ...> for the button bar has been DELETED */}
       </div>
 
-      {/* === NEW STICKY FOOTER (Based on your example) === */}
-      {/* - 'emerald' changed to 'green' to match our theme
-        - 'sticky bottom-0' is from your example
-      */}
       <footer className="sticky bottom-0 w-full border-t border-green-800 bg-emerald-950 p-4 shadow-sm">
-        {/* - 'max-w-lg' changed to 'max-w-7xl' to align with this page's grid
-         */}
         <div className="mx-auto flex max-w-7xl items-center justify-between">
-          {/* --- Secondary Button (Your Style) --- */}
           <Button
             className="rounded-md bg-emerald-900 px-4 py-2 text-base font-medium text-green-100
                        shadow-sm
                        hover:bg-green-700
                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-            onClick={() => navigate(-1)} // Correct function
+            onClick={() => navigate(-1)}
           >
             Retornar sem Salvar
           </Button>
 
-          {/* --- Primary Button (Your Style) --- */}
           <Button
             className="rounded-md bg-emerald-900 px-4 py-2 text-base font-medium text-green-100
                        shadow-sm
                        hover:bg-green-700
                        focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-            onClick={() => handleClickAddEvento()} // Correct function
+            onClick={() => handleClickAddEvento()}
           >
-            {/* Correct text */}
             {evento.id > 0 ? "Salvar Alterações" : "Adicionar Evento"}
           </Button>
         </div>

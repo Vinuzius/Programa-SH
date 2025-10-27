@@ -63,7 +63,8 @@ const MaterialFormsSection: React.FC<MaterialFormsProps> = ({
 
         <Fieldset className="mt-6 border-t border-slate-300 pt-6">
           {" "}
-          {/* Darker border */}
+          {/* Darker border 
+          Adicionar um dropdownlist para definir evento de delegada */}
           <Field className="flex items-center gap-3">
             <Label className="text-sm font-medium text-slate-700">
               Adicionar quantidade Delegada e Conserto?
@@ -97,7 +98,7 @@ const MaterialFormsSection: React.FC<MaterialFormsProps> = ({
           </Field>
           {advancedOptions && (
             <div className="mt-4 space-y-4 pl-0">
-              <Field className="flex flex-col gap-1.5">
+              {/* <Field className="flex flex-col gap-1.5">
                 <Label className="text-sm font-medium text-slate-700">
                   Delegada:
                 </Label>
@@ -110,7 +111,7 @@ const MaterialFormsSection: React.FC<MaterialFormsProps> = ({
                   min="0"
                   className="block w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-slate-900 placeholder-slate-400 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 />
-              </Field>
+              </Field> */}
 
               <Field className="flex flex-col gap-1.5">
                 <Label className="text-sm font-medium text-slate-700">

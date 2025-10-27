@@ -79,6 +79,8 @@ const CadastroMaterialPage = () => {
 
     const newMaterialList = [...savedMateriais, finalMaterial];
     localStorage.setItem("material", JSON.stringify(newMaterialList));
+    console.log("Material Adicionado: ", finalMaterial);
+    navigate("/material/stock");
   };
 
   return (
