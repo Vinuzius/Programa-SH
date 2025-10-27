@@ -168,7 +168,7 @@ function CadastroEventoPage() {
           <MaterialSection
             material={evento.materiais.map((m) => ({
               ...m,
-              quantidade: (m as any).quantidade ?? 0,
+              quantidade: m.quantidade,
             }))}
             onClickAddMaterial={onClickAddMaterial}
           />

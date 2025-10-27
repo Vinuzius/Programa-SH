@@ -10,5 +10,5 @@ export interface CreateEventoDto {
   valorBruto: number;
   sinal?: number;
   status?: EventoStatusEnum;
-  materiais: CreateMaterialDTO[];
+  materiais: (CreateMaterialDTO & { quantidade: number })[];
 }
