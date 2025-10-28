@@ -1,8 +1,8 @@
 import { useState } from "react";
-import type { CreateMaterialDTO } from "../../dto/CreateMaterialDTO";
-import MaterialFormsSection from "./MaterialFormsSection";
-import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
+import Button from "../components/utils/Button";
+import MaterialFormsSection from "../components/Material/MaterialFormsSection";
+import type { CreateMaterialDTO } from "../dto/CreateMaterialDTO";
 
 const getEventosFromMaterial = (): CreateMaterialDTO[] => {
   try {

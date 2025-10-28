@@ -2,11 +2,10 @@ import { ChevronDown, Search, Archive, Wrench, Truck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { CreateMaterialDTO } from "../../dto/CreateMaterialDTO";
-import NavBarStatus, { type PathObject } from "../../components/NavBarStatus";
+import NavBarStatus, { type PathObject } from "../utils/NavBarStatus";
 import type { CreateEventoDto } from "../../dto/CreateEventoDTO";
 
 const getMaterialFromStorage = (): CreateMaterialDTO[] => {
-  // ... (lógica inalterada)
   try {
     const storedMaterial = localStorage.getItem("material");
     return storedMaterial ? JSON.parse(storedMaterial) : [];
@@ -17,7 +16,6 @@ const getMaterialFromStorage = (): CreateMaterialDTO[] => {
 };
 
 const getEventosFromStorage = (): CreateEventoDto[] => {
-  // ... (lógica inalterada)
   try {
     const storedEvento = localStorage.getItem("evento");
     return storedEvento ? JSON.parse(storedEvento) : [];
@@ -28,7 +26,6 @@ const getEventosFromStorage = (): CreateEventoDto[] => {
 };
 
 const materialPaths: PathObject[] = [
-  // ... (lógica inalterada)
   {
     name: "Em Galpão",
     path: "/material/stock",
@@ -47,7 +44,6 @@ const materialPaths: PathObject[] = [
 ];
 
 const MaterialPage = () => {
-  // ... (lógica de state e handlers inalterada)
   const { status } = useParams<{ status?: string }>();
   const [MateriaisTotais] = useState<CreateMaterialDTO[]>(
     getMaterialFromStorage()
@@ -112,7 +108,6 @@ const MaterialPage = () => {
     return (
       <ul className="space-y-2 list-disc list-inside">
         {eventosUsing.map((ev) => (
-          // MUDANÇA: Cor do texto
           <li key={ev.id} className="text-gray-400">
             {ev.nome} ({ev.dataInicio}) - {/* MUDANÇA: Cor do texto */}
             <span className="font-medium text-gray-100">

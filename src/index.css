@@ -1,1 +1,91 @@
 @import "tailwindcss";
+
+/* --- 1. Barra de Ferramentas (Frame Escuro) --- */
+.rbc-toolbar {
+  @apply mb-4 bg-emerald-950 p-3 rounded-lg flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4;
+  @apply border border-green-800;
+}
+
+.rbc-toolbar-label {
+  @apply text-2xl font-bold text-gray-100 flex-grow text-center py-1.5;
+}
+
+.rbc-btn-group {
+  @apply flex items-center justify-center gap-2;
+}
+
+/* Botões INATIVOS (claros) */
+.rbc-toolbar button {
+  @apply !rounded-md !bg-stone-400 !px-3 !py-1.5 !text-base !font-medium !text-gray-900;
+  @apply !shadow-sm !transition-colors;
+  @apply hover:!bg-stone-500;
+  @apply focus:!outline-none focus:!ring-2 focus:!ring-gray-500;
+}
+
+.rbc-toolbar button.rbc-active {
+  @apply !bg-black !text-white !font-semibold;
+  @apply hover:!bg-stone-700;
+  @apply focus:!ring-stone-500;
+}
+
+/* --- 2. Cabeçalho (Dias da Semana: Seg, Ter...) --- */
+.rbc-header {
+  @apply text-center border-b border-gray-300 p-2 font-semibold text-gray-700 uppercase tracking-wider;
+  @apply bg-gray-100;
+}
+
+/* --- 3. Grelha do Calendário (Dias) --- */
+.rbc-month-view,
+.rbc-time-view {
+  /* Keep the border or remove? Let's keep it for now */
+  @apply border border-gray-300;
+}
+
+/* Fundo da célula */
+.rbc-day-bg {
+  /* Only change background and border color */
+  @apply bg-white border-l border-gray-300; /* Removed overall border */
+}
+
+/* Container do número do dia - REMOVED PADDING/TEXT-ALIGN */
+.rbc-date-cell {
+  /* No padding or text-align needed here */
+}
+
+/* Texto do número do dia */
+.rbc-button-link {
+  /* Only change text color and hover effects, REMOVED SIZE/FLEX */
+  @apply text-gray-900;
+  @apply transition-colors hover:bg-blue-600 hover:!text-white rounded-sm; /* Simpler hover */
+}
+
+/* --- 4. Estados Especiais dos Dias --- */
+.rbc-day-bg.rbc-today {
+  @apply !bg-gray-400; /* Keep */
+}
+.rbc-day-bg.rbc-today .rbc-button-link {
+  @apply !text-gray-900 !font-bold; /* Keep */
+  @apply hover:bg-yellow-300; /* Keep */
+}
+.rbc-off-range-bg {
+  @apply !bg-gray-300; /* Keep */
+}
+.rbc-off-range .rbc-button-link {
+  @apply text-gray-500; /* Keep */
+}
+
+/* --- 5. Visualização de Semana/Dia (Slots de Hora) --- */
+.rbc-time-view .rbc-time-slot {
+  @apply !min-h-[40px] border-t border-gray-300;
+}
+
+.rbc-time-header-content {
+  @apply border-b border-gray-300;
+}
+
+/* --- 6. Eventos --- */
+.rbc-event {
+  /* Focus on color, text, border-radius. REMOVED PADDING/MARGIN/SHADOW */
+  @apply bg-blue-600 border-none text-white rounded text-sm;
+  @apply transition-colors hover:bg-blue-500;
+}

@@ -7,11 +7,13 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import CadastroEventoPage from "./pages/Event/CadastroEventoPage.tsx";
+import CalendarPage from "./pages/CalendarPage.tsx";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import EventosPage from "./components/Event/EventosPage.tsx";
+import MaterialPage from "./components/Material/MaterialPage.tsx";
+import CadastroEventoPage from "./pages/CadastroEventoPage.tsx";
+import CadastroMaterialPage from "./pages/CadastroMaterialPage.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
-import EventosPage from "./pages/Event/EventosPage.tsx";
-import MaterialPage from "./pages/Material/MaterialPage.tsx";
-import CadastroMaterialPage from "./pages/Material/CadastroMaterialPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -54,7 +56,7 @@ const router = createBrowserRouter([
 
       {
         path: "/calendario",
-        element: <h1>Calendario</h1>,
+        element: <CalendarPage />,
       },
     ],
   },

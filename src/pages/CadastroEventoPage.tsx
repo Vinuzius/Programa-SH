@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
-import type { CreateEventoDto } from "../../dto/CreateEventoDTO";
-import type { CreateMaterialDTO } from "../../dto/CreateMaterialDTO";
-import Button from "../../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
-import EventoForms from "./EventoForms";
-import MaterialSection from "./MaterialSection";
+import EventoForms from "../components/Event/EventoForms";
+import MaterialSection from "../components/Event/MaterialSection";
+import type { CreateEventoDto } from "../dto/CreateEventoDTO";
+import type { CreateMaterialDTO } from "../dto/CreateMaterialDTO";
+import Button from "../components/utils/Button";
 
 const getEventosFromStorage = (): CreateEventoDto[] => {
   try {

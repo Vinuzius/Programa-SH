@@ -4,10 +4,9 @@ import { useParams } from "react-router-dom";
 import type { EventoStatusEnum } from "../../enum/EventoStatusEnum";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import NavBarStatus, { type PathObject } from "../../components/NavBarStatus";
+import NavBarStatus, { type PathObject } from "../utils/NavBarStatus";
 
 const getEventosFromStorage = (): CreateEventoDto[] => {
-  // ... (lógica inalterada)
   try {
     const storedEvento = localStorage.getItem("evento");
     return storedEvento ? JSON.parse(storedEvento) : [];
